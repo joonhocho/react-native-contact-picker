@@ -1,0 +1,5 @@
+rootProject.name = 'ExampleApp'
+
+include ':app'
+include ':react-native-add-contact'
+project(':react-native-add-contact').projectDir = new File(rootProject.projectDir, '../../android')
