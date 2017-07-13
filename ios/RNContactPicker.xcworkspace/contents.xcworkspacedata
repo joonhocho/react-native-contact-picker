@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "container:"
+      name = "RNContactPicker">
+      <FileRef
+         location = "group:RNContactPicker-Bridging-Header.h">
+      </FileRef>
+      <FileRef
+         location = "group:RNContactPicker.swift">
+      </FileRef>
+      <FileRef
+         location = "group:RNContactPickerBridge.m">
+      </FileRef>
+   </Group>
+</Workspace>

@@ -1,21 +1,20 @@
-//
-//  RNContactView.swift
-//  ExampleApp
-//
-//  Created by Joon Ho Cho on 4/16/17.
-//  Copyright © 2017 Facebook. All rights reserved.
-//
 import Foundation
 import UIKit
 import ContactsUI
 import Contacts
 
-@objc(RNContactView)
-class RNContactView: UIView, CNContactPickerDelegate {
+@objc(RNContactPickerView)
+class RNContactPickerView: UIView, CNContactPickerDelegate {
   var controller: CNContactPickerViewController?
   
+  var onCancel: RCTBubblingEventBlock?
+  var onSelectContact: RCTBubblingEventBlock?
+  
+  
   override init(frame: CGRect) {
+    print("frame", frame)
     super.init(frame: frame)
+    initContactViewController()
   }
   
   convenience init() {
@@ -192,63 +191,47 @@ class RNContactView: UIView, CNContactPickerDelegate {
     return label
   }
   
-  func createContact(_ data: [String: Any]) -> CNMutableContact {
-    // Creating a mutable object to add to the contact
-    let contact = CNMutableContact()
+  func addString(data: inout [String: Any], key: String, value: String?) {
+    if let x = value, !x.isEmpty {
+      data[key] = x
+    }
+  }
+  
+  func contactToDictionary(_ contact: CNContact) -> [String: Any] {
+    var data = [String: Any]()
     
-    if let value = data["contactType"] as? String {
-      contact.contactType = value == "organization" ? .organization : .person
-    }
+    addString(data: &data, key: "identifier", value: contact.identifier)
     
-    if let value = data["namePrefix"] as? String {
-      contact.namePrefix = value
-    }
-    if let value = data["givenName"] as? String {
-      contact.givenName = value
-    }
-    if let value = data["middleName"] as? String {
-      contact.middleName = value
-    }
-    if let value = data["familyName"] as? String {
-      contact.familyName = value
-    }
-    if let value = data["previousFamilyName"] as? String {
-      contact.previousFamilyName = value
-    }
-    if let value = data["nameSuffix"] as? String {
-      contact.nameSuffix = value
-    }
-    if let value = data["nickname"] as? String {
-      contact.nickname = value
+    switch contact.contactType {
+    case .organization:
+      data["contactType"] = "organization"
+      break
+    case .person:
+      data["contactType"] = "person"
     }
     
-    if let value = data["organizationName"] as? String {
-      contact.organizationName = value
-    }
-    if let value = data["departmentName"] as? String {
-      contact.departmentName = value
-    }
-    if let value = data["jobTitle"] as? String {
-      contact.jobTitle = value
+    addString(data: &data, key: "namePrefix", value: contact.namePrefix)
+    addString(data: &data, key: "givenName", value: contact.givenName)
+    addString(data: &data, key: "middleName", value: contact.middleName)
+    addString(data: &data, key: "familyName", value: contact.familyName)
+    addString(data: &data, key: "previousFamilyName", value: contact.previousFamilyName)
+    addString(data: &data, key: "nameSuffix", value: contact.nameSuffix)
+    addString(data: &data, key: "nickname", value: contact.nickname)
+    
+    addString(data: &data, key: "organizationName", value: contact.organizationName)
+    addString(data: &data, key: "departmentName", value: contact.departmentName)
+    addString(data: &data, key: "jobTitle", value: contact.jobTitle)
+    
+    addString(data: &data, key: "phoneticGivenName", value: contact.phoneticGivenName)
+    addString(data: &data, key: "phoneticMiddleName", value: contact.phoneticMiddleName)
+    addString(data: &data, key: "phoneticFamilyName", value: contact.phoneticFamilyName)
+    if #available(iOS 10.0, *) {
+      addString(data: &data, key: "phoneticOrganizationName", value: contact.phoneticOrganizationName)
     }
     
-    if let value = data["phoneticGivenName"] as? String {
-      contact.phoneticGivenName = value
-    }
-    if let value = data["phoneticMiddleName"] as? String {
-      contact.phoneticMiddleName = value
-    }
-    if let value = data["phoneticFamilyName"] as? String {
-      contact.phoneticFamilyName = value
-    }
-    if let value = data["phoneticOrganizationName"] as? String {
-      contact.phoneticOrganizationName = value
-    }
+    addString(data: &data, key: "note", value: contact.note)
     
-    if let value = data["note"] as? String {
-      contact.note = value
-    }
-    
+    /*
     if let value = data["imageData"] as? String {
       contact.imageData = Data(base64Encoded: value, options: .ignoreUnknownCharacters)
     } else if let value = data["imageUri"] as? String, let url = URL(string: value) {
@@ -383,12 +366,15 @@ class RNContactView: UIView, CNContactPickerDelegate {
       }
     }
     
-    return contact
+ */
+    
+    return data
   }
   
-  func initContactViewController(_ contact: CNContact) {
+  func initContactViewController() {
     // Creating a mutable object to add to the contact
     DispatchQueue.main.async {
+      print("init")
       if let vc = self.controller {
         vc.delegate = nil
         vc.removeFromParentViewController()
@@ -396,19 +382,32 @@ class RNContactView: UIView, CNContactPickerDelegate {
       }
       
       let vc = CNContactPickerViewController()
-      self.controller = vc
+     //  self.controller = vc
       vc.delegate = self
+      /*
       vc.view.frame = self.frame
-      self.addSubview(vc.view)
+      print("frame", self.frame)
+      // self.addSubview(vc.view)
+ */
+      UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
     }
   }
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    controller?.view.frame = bounds
+    // controller?.view.frame = bounds
+    print("frame", bounds, controller)
   }
   
   func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
-    
+    onCancel?(nil)
+  }
+  
+  func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
+    onSelectContact?(contactToDictionary(contact))
+  }
+  
+  func contactPicker(_ picker: CNContactPickerViewController, didSelect contacts: [CNContact]) {
+    onSelectContact?(["d": contacts.map { x in contactToDictionary(x) }])
   }
 }

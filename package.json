@@ -1,0 +1,31 @@
+
+{
+  "name": "react-native-contact-picker",
+  "version": "0.0.1",
+  "description": "React Native wrapper for CNContactPickerViewController for picking contact/contacts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joonhocho/react-native-contact-picker.git"
+  },
+  "keywords": [
+    "react-native",
+    "react",
+    "native",
+    "contact",
+    "picker",
+    "view",
+    "controller",
+    "CNContactPickerViewController",
+    "ios"
+  ],
+  "author": "Joon Ho Cho <joonho1101@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joonhocho/react-native-contact-picker/issues"
+  },
+  "homepage": "https://github.com/joonhocho/react-native-contact-picker#readme"
+}

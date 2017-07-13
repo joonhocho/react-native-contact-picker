@@ -1,9 +1,9 @@
-//
-//  RNContactPickerView.m
-//  ExampleApp
-//
-//  Created by Joon Ho Cho on 7/13/17.
-//  Copyright © 2017 Facebook. All rights reserved.
-//
+#import <UIKit/UIKit.h>
+#import <React/RCTComponent.h>
 
-#import <Foundation/Foundation.h>
+@interface RNContactPickerView: UIView
+
+@property (nonatomic, copy) RCTBubblingEventBlock onCancel;
+@property (nonatomic, copy) RCTBubblingEventBlock onSelectContact;
+
+@end

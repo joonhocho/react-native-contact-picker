@@ -1,11 +1,3 @@
-//
-//  RNContactViewManager.m
-//  ExampleApp
-//
-//  Created by Joon Ho Cho on 4/16/17.
-//  Copyright © 2017 Facebook. All rights reserved.
-//
-
 #import <ContactsUI/ContactsUI.h>
 
 #import <React/RCTComponent.h>
@@ -16,6 +8,7 @@
 
 RCT_EXTERN_METHOD((UIView *)view);
 
-RCT_EXPORT_VIEW_PROPERTY(contact, NSDictionary)
+RCT_EXPORT_VIEW_PROPERTY(onCancel, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onSelectContact, RCTBubblingEventBlock)
 
 @end
