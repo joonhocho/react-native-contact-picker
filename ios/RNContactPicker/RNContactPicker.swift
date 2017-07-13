@@ -119,6 +119,26 @@ class RNContactPicker: NSObject {
       data[key] = x
     }
   }
+
+  static func addLabel<T>(_ data: inout [String: Any], item: CNLabeledValue<T>) {
+    data["identifier"] = item.identifier
+    if let label = item.label {
+      if label.hasPrefix("_$!<") && label.hasSuffix(">!$_") {
+        addString(data: &data, key: "label", value: label.substring(with: label.index(label.startIndex, offsetBy: 4)..<label.index(label.endIndex, offsetBy: -4)))
+      } else {
+        addString(data: &data, key: "label", value: item.label)
+      }
+      addString(data: &data, key: "localizedLabel", value: CNLabeledValue<T>.localizedString(forLabel: label))
+    }
+  }
+  
+  static func addDate(_ data: inout [String: Any], value: DateComponents?) {
+    if let x = value {
+      add(&data, key: "year", value: x.year == NSDateComponentUndefined ? nil : x.year)
+      add(&data, key: "month", value: x.month == NSDateComponentUndefined ? nil : x.month)
+      add(&data, key: "day", value: x.day == NSDateComponentUndefined ? nil : x.day)
+    }
+  }
   
   static func contactToDictionary(_ contact: CNContact) -> [String: Any] {
     var data = [String: Any]()
@@ -141,6 +161,8 @@ class RNContactPicker: NSObject {
     addString(data: &data, key: "nameSuffix", value: contact.nameSuffix)
     addString(data: &data, key: "nickname", value: contact.nickname)
     
+    addString(data: &data, key: "fullName", value: CNContactFormatter.string(from: contact, style: .fullName))
+    
     addString(data: &data, key: "organizationName", value: contact.organizationName)
     addString(data: &data, key: "departmentName", value: contact.departmentName)
     addString(data: &data, key: "jobTitle", value: contact.jobTitle)
@@ -160,24 +182,23 @@ class RNContactPicker: NSObject {
     
     data["phoneNumbers"] = contact.phoneNumbers.map { val in
       var o = [String: Any]()
-      addString(data: &o, key: "identifier", value: val.identifier)
-      addString(data: &o, key: "label", value: val.label)
-      addString(data: &o, key: "value", value: val.value.stringValue)
+      addLabel(&o, item: val)
+      addString(data: &o, key: "stringValue", value: val.value.stringValue)
+      addString(data: &o, key: "countryCode", value: val.value.value(forKey: "countryCode") as? String)
+      addString(data: &o, key: "digits", value: val.value.value(forKey: "digits") as? String)
       return o
       } as [[String: Any]]
     
     data["emailAddresses"] = contact.emailAddresses.map { val in
       var o = [String: Any]()
-      addString(data: &o, key: "identifier", value: val.identifier)
-      addString(data: &o, key: "label", value: val.label)
+      addLabel(&o, item: val)
       addString(data: &o, key: "value", value: val.value as String)
       return o
       } as [[String: Any]]
     
     data["postalAddresses"] = contact.postalAddresses.map { val in
       var o = [String: Any]()
-      addString(data: &o, key: "identifier", value: val.identifier)
-      addString(data: &o, key: "label", value: val.label)
+      addLabel(&o, item: val)
       addString(data: &o, key: "city", value: val.value.city)
       addString(data: &o, key: "country", value: val.value.country)
       addString(data: &o, key: "isoCountryCode", value: val.value.isoCountryCode)
@@ -190,30 +211,29 @@ class RNContactPicker: NSObject {
       if #available(iOS 10.3, *) {
         addString(data: &o, key: "subLocality", value: val.value.subLocality)
       }
+      addString(data: &o, key: "mailingAddress", value: CNPostalAddressFormatter.string(from: val.value, style: .mailingAddress))
       return o
       } as [[String: Any]]
     
     data["urlAddresses"] = contact.urlAddresses.map { val in
       var o = [String: Any]()
-      addString(data: &o, key: "identifier", value: val.identifier)
-      addString(data: &o, key: "label", value: val.label)
+      addLabel(&o, item: val)
       addString(data: &o, key: "value", value: val.value as String)
       return o
       } as [[String: Any]]
     
     data["contactRelations"] = contact.contactRelations.map { val in
       var o = [String: Any]()
-      addString(data: &o, key: "identifier", value: val.identifier)
-      addString(data: &o, key: "label", value: val.label)
-      addString(data: &o, key: "value", value: val.value.name)
+      addLabel(&o, item: val)
+      addString(data: &o, key: "name", value: val.value.name)
       return o
       } as [[String: Any]]
     
     data["socialProfiles"] = contact.socialProfiles.map { val in
       var o = [String: Any]()
-      addString(data: &o, key: "identifier", value: val.identifier)
-      addString(data: &o, key: "label", value: val.label)
+      addLabel(&o, item: val)
       addString(data: &o, key: "service", value: val.value.service)
+      addString(data: &o, key: "localizedService", value: CNSocialProfile.localizedString(forService: val.value.service))
       addString(data: &o, key: "urlString", value: val.value.urlString)
       addString(data: &o, key: "userIdentifier", value: val.value.userIdentifier)
       addString(data: &o, key: "username", value: val.value.username)
@@ -222,36 +242,29 @@ class RNContactPicker: NSObject {
     
     data["instantMessageAddresses"] = contact.instantMessageAddresses.map { val in
       var o = [String: Any]()
-      addString(data: &o, key: "identifier", value: val.identifier)
-      addString(data: &o, key: "label", value: val.label)
+      addLabel(&o, item: val)
       addString(data: &o, key: "service", value: val.value.service)
+      addString(data: &o, key: "localizedService", value: CNInstantMessageAddress.localizedString(forService: val.value.service))
       addString(data: &o, key: "username", value: val.value.username)
       return o
       } as [[String: Any]]
     
     if let value = contact.birthday {
       var o = [String: Any]()
-      add(&o, key: "year", value: value.year)
-      add(&o, key: "month", value: value.month)
-      add(&o, key: "day", value: value.day)
+      addDate(&o, value: value)
       data["birthday"] = o
     }
     
     if let value = contact.nonGregorianBirthday {
       var o = [String: Any]()
-      add(&o, key: "year", value: value.year)
-      add(&o, key: "month", value: value.month)
-      add(&o, key: "day", value: value.day)
+      addDate(&o, value: value)
       data["nonGregorianBirthday"] = o
     }
     
     data["dates"] = contact.dates.map { val in
       var o = [String: Any]()
-      addString(data: &o, key: "identifier", value: val.identifier)
-      addString(data: &o, key: "label", value: val.label)
-      add(&o, key: "year", value: val.value.year)
-      add(&o, key: "month", value: val.value.month)
-      add(&o, key: "day", value: val.value.day)
+      addLabel(&o, item: val)
+      addDate(&o, value: val.value as DateComponents)
       return o
       } as [[String: Any]]
     
