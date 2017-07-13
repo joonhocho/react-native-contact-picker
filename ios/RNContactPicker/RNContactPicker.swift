@@ -199,18 +199,18 @@ class RNContactPicker: NSObject {
     data["postalAddresses"] = contact.postalAddresses.map { val in
       var o = [String: Any]()
       addLabel(&o, item: val)
-      addString(data: &o, key: "city", value: val.value.city)
-      addString(data: &o, key: "country", value: val.value.country)
-      addString(data: &o, key: "isoCountryCode", value: val.value.isoCountryCode)
-      addString(data: &o, key: "postalCode", value: val.value.postalCode)
-      addString(data: &o, key: "state", value: val.value.state)
       addString(data: &o, key: "street", value: val.value.street)
-      if #available(iOS 10.3, *) {
-        addString(data: &o, key: "subAdministrativeArea", value: val.value.subAdministrativeArea)
-      }
       if #available(iOS 10.3, *) {
         addString(data: &o, key: "subLocality", value: val.value.subLocality)
       }
+      addString(data: &o, key: "city", value: val.value.city)
+      if #available(iOS 10.3, *) {
+        addString(data: &o, key: "subAdministrativeArea", value: val.value.subAdministrativeArea)
+      }
+      addString(data: &o, key: "state", value: val.value.state)
+      addString(data: &o, key: "postalCode", value: val.value.postalCode)
+      addString(data: &o, key: "country", value: val.value.country)
+      addString(data: &o, key: "isoCountryCode", value: val.value.isoCountryCode)
       addString(data: &o, key: "mailingAddress", value: CNPostalAddressFormatter.string(from: val.value, style: .mailingAddress))
       return o
       } as [[String: Any]]
@@ -232,20 +232,20 @@ class RNContactPicker: NSObject {
     data["socialProfiles"] = contact.socialProfiles.map { val in
       var o = [String: Any]()
       addLabel(&o, item: val)
+      addString(data: &o, key: "urlString", value: val.value.urlString)
+      addString(data: &o, key: "username", value: val.value.username)
+      addString(data: &o, key: "userIdentifier", value: val.value.userIdentifier)
       addString(data: &o, key: "service", value: val.value.service)
       addString(data: &o, key: "localizedService", value: CNSocialProfile.localizedString(forService: val.value.service))
-      addString(data: &o, key: "urlString", value: val.value.urlString)
-      addString(data: &o, key: "userIdentifier", value: val.value.userIdentifier)
-      addString(data: &o, key: "username", value: val.value.username)
       return o
       } as [[String: Any]]
     
     data["instantMessageAddresses"] = contact.instantMessageAddresses.map { val in
       var o = [String: Any]()
       addLabel(&o, item: val)
+      addString(data: &o, key: "username", value: val.value.username)
       addString(data: &o, key: "service", value: val.value.service)
       addString(data: &o, key: "localizedService", value: CNInstantMessageAddress.localizedString(forService: val.value.service))
-      addString(data: &o, key: "username", value: val.value.username)
       return o
       } as [[String: Any]]
     
