@@ -37,12 +37,9 @@
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		A8C2607DCAB347A28640ED76 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A7BF8B9A8A44FA08873E604 /* libRCTActionSheet.a */; };
-		AC49F91C1F17563800DD00E3 /* RNContactPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC49F91B1F17563800DD00E3 /* RNContactPickerView.m */; };
-		AC57DE3A1EA4EDCF00F9D947 /* RNContactPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC57DE351EA4EDCF00F9D947 /* RNContactPicker.swift */; };
-		AC57DE3B1EA4EDCF00F9D947 /* RNContactPickerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AC57DE361EA4EDCF00F9D947 /* RNContactPickerBridge.m */; };
-		AC57DE3C1EA4EDCF00F9D947 /* RNContactPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC57DE371EA4EDCF00F9D947 /* RNContactPickerView.swift */; };
-		AC57DE3D1EA4EDCF00F9D947 /* RNContactPickerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AC57DE381EA4EDCF00F9D947 /* RNContactPickerViewManager.m */; };
-		AC57DE3E1EA4EDCF00F9D947 /* RNContactPickerViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC57DE391EA4EDCF00F9D947 /* RNContactPickerViewManager.swift */; };
+		AC49F9C21F17992100DD00E3 /* RNContactPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC49F9BF1F17992100DD00E3 /* RNContactPicker.swift */; };
+		AC49F9C31F17992100DD00E3 /* RNContactPicker.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = AC49F9C01F17992100DD00E3 /* RNContactPicker.xcworkspace */; };
+		AC49F9C41F17992100DD00E3 /* RNContactPickerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AC49F9C11F17992100DD00E3 /* RNContactPickerBridge.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -265,13 +262,10 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		AC01688B1EA45ED100DE26F8 /* ExampleApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ExampleApp-Bridging-Header.h"; sourceTree = "<group>"; };
-		AC49F91B1F17563800DD00E3 /* RNContactPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNContactPickerView.m; path = ../../ios/RNContactPickerView.m; sourceTree = "<group>"; };
-		AC57DE341EA4EDCF00F9D947 /* RNContactPicker-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RNContactPicker-Bridging-Header.h"; path = "../../ios/RNContactPicker-Bridging-Header.h"; sourceTree = "<group>"; };
-		AC57DE351EA4EDCF00F9D947 /* RNContactPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNContactPicker.swift; path = ../../ios/RNContactPicker.swift; sourceTree = "<group>"; };
-		AC57DE361EA4EDCF00F9D947 /* RNContactPickerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNContactPickerBridge.m; path = ../../ios/RNContactPickerBridge.m; sourceTree = "<group>"; };
-		AC57DE371EA4EDCF00F9D947 /* RNContactPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNContactPickerView.swift; path = ../../ios/RNContactPickerView.swift; sourceTree = "<group>"; };
-		AC57DE381EA4EDCF00F9D947 /* RNContactPickerViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNContactPickerViewManager.m; path = ../../ios/RNContactPickerViewManager.m; sourceTree = "<group>"; };
-		AC57DE391EA4EDCF00F9D947 /* RNContactPickerViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNContactPickerViewManager.swift; path = ../../ios/RNContactPickerViewManager.swift; sourceTree = "<group>"; };
+		AC49F9BE1F17992100DD00E3 /* RNContactPicker-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNContactPicker-Bridging-Header.h"; sourceTree = "<group>"; };
+		AC49F9BF1F17992100DD00E3 /* RNContactPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNContactPicker.swift; sourceTree = "<group>"; };
+		AC49F9C01F17992100DD00E3 /* RNContactPicker.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = RNContactPicker.xcworkspace; sourceTree = "<group>"; };
+		AC49F9C11F17992100DD00E3 /* RNContactPickerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNContactPickerBridge.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -482,7 +476,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				AC57DE1A1EA4EDAE00F9D947 /* RNAddContact */,
+				AC49F9BD1F17992100DD00E3 /* RNContactPicker */,
 				13B07FAE1A68108700A75B9A /* ExampleApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ExampleAppTests */,
@@ -504,18 +498,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		AC57DE1A1EA4EDAE00F9D947 /* RNAddContact */ = {
+		AC49F9BD1F17992100DD00E3 /* RNContactPicker */ = {
 			isa = PBXGroup;
 			children = (
-				AC57DE341EA4EDCF00F9D947 /* RNContactPicker-Bridging-Header.h */,
-				AC57DE351EA4EDCF00F9D947 /* RNContactPicker.swift */,
-				AC57DE361EA4EDCF00F9D947 /* RNContactPickerBridge.m */,
-				AC57DE371EA4EDCF00F9D947 /* RNContactPickerView.swift */,
-				AC49F91B1F17563800DD00E3 /* RNContactPickerView.m */,
-				AC57DE381EA4EDCF00F9D947 /* RNContactPickerViewManager.m */,
-				AC57DE391EA4EDCF00F9D947 /* RNContactPickerViewManager.swift */,
+				AC49F9BE1F17992100DD00E3 /* RNContactPicker-Bridging-Header.h */,
+				AC49F9BF1F17992100DD00E3 /* RNContactPicker.swift */,
+				AC49F9C01F17992100DD00E3 /* RNContactPicker.xcworkspace */,
+				AC49F9C11F17992100DD00E3 /* RNContactPickerBridge.m */,
 			);
-			name = RNAddContact;
+			name = RNContactPicker;
+			path = ../../ios/RNContactPicker;
 			sourceTree = "<group>";
 		};
 		AC57DE4A1EA6F49800F9D947 /* Products */ = {
@@ -888,6 +880,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				AC49F9C31F17992100DD00E3 /* RNContactPicker.xcworkspace in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -953,14 +946,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC57DE3C1EA4EDCF00F9D947 /* RNContactPickerView.swift in Sources */,
-				AC57DE3E1EA4EDCF00F9D947 /* RNContactPickerViewManager.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				AC57DE3B1EA4EDCF00F9D947 /* RNContactPickerBridge.m in Sources */,
-				AC57DE3D1EA4EDCF00F9D947 /* RNContactPickerViewManager.m in Sources */,
-				AC49F91C1F17563800DD00E3 /* RNContactPickerView.m in Sources */,
+				AC49F9C41F17992100DD00E3 /* RNContactPickerBridge.m in Sources */,
+				AC49F9C21F17992100DD00E3 /* RNContactPicker.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				AC57DE3A1EA4EDCF00F9D947 /* RNContactPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

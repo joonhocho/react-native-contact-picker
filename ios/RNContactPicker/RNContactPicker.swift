@@ -254,7 +254,7 @@ class RNContactPicker: NSObject {
       add(&o, key: "day", value: val.value.day)
       return o
       } as [[String: Any]]
-         
+    
     return data
   }
 
