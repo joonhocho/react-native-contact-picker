@@ -1,7 +1,7 @@
 
 {
   "name": "react-native-contact-picker",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "React Native wrapper for CNContactPickerViewController for picking contact/contacts",
   "main": "index.js",
   "scripts": {
