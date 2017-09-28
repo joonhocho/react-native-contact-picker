@@ -2,74 +2,78 @@ import Foundation
 import Contacts
 import ContactsUI
 
+protocol ContactPickerDelegateDelegate: class {
+  func done()
+}
+
 class PickContactDelegate: NSObject, CNContactPickerDelegate {
-  unowned let picker: RNContactPicker
+  unowned let delegate: ContactPickerDelegateDelegate
   var resolve: RCTPromiseResolveBlock?
   var reject: RCTPromiseRejectBlock?
   
-  init(picker: RNContactPicker, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
-    self.picker = picker
+  init(delegate: ContactPickerDelegateDelegate, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+    self.delegate = delegate
     self.resolve = resolve
     self.reject = reject
   }
   
   deinit {
     reject?("deinit", "Deinitialized", nil)
-    clear()
   }
   
   func clear() {
     resolve = nil
     reject = nil
-    self.picker.contactDelegate = nil
   }
   
   func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
     reject?("cancel", "User Cancelled", nil)
     clear()
+    delegate.done()
   }
   
   func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
     resolve?(RNContactPicker.contactToDictionary(contact))
     clear()
+    delegate.done()
   }
 }
 
 class PickContactsDelegate: NSObject, CNContactPickerDelegate {
-  unowned let picker: RNContactPicker
+  unowned let delegate: ContactPickerDelegateDelegate
   var resolve: RCTPromiseResolveBlock?
   var reject: RCTPromiseRejectBlock?
   
-  init(picker: RNContactPicker, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
-    self.picker = picker
+  init(delegate: ContactPickerDelegateDelegate, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+    self.delegate = delegate
     self.resolve = resolve
     self.reject = reject
   }
   
   deinit {
     reject?("deinit", "Deinitialized", nil)
-    clear()
   }
   
   func clear() {
     resolve = nil
     reject = nil
-    self.picker.contactsDelegate = nil
   }
   
   func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
     reject?("cancel", "User Cancelled", nil)
     clear()
+    delegate.done()
   }
   
   func contactPicker(_ picker: CNContactPickerViewController, didSelect contacts: [CNContact]) {
     resolve?(contacts.map { x in RNContactPicker.contactToDictionary(x) })
     clear()
+    delegate.done()
   }
 }
 
 @objc(RNContactPicker)
-class RNContactPicker: NSObject {
+class RNContactPicker: NSObject, ContactPickerDelegateDelegate {
   var contactDelegate: PickContactDelegate?
   var contactsDelegate: PickContactsDelegate?
   
@@ -79,34 +83,59 @@ class RNContactPicker: NSObject {
     ]
   }
   
+  func getTopViewController(window: UIWindow?) -> UIViewController? {
+    if let window = window {
+      var top = window.rootViewController
+      while true {
+        if let presented = top?.presentedViewController {
+          top = presented
+        } else if let nav = top as? UINavigationController {
+          top = nav.visibleViewController
+        } else if let tab = top as? UITabBarController {
+          top = tab.selectedViewController
+        } else {
+          break
+        }
+      }
+      return top
+    }
+    return nil
+  }
+  
+  func present(viewController: UIViewController) {
+    DispatchQueue.main.async { [weak self] in
+      self?.getTopViewController(window: UIApplication.shared.keyWindow)?.present(viewController, animated: true, completion: nil)
+    }
+  }
+  
   @objc func pickContact(_ data: [String: Any], resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
     let vc = CNContactPickerViewController()
-    contactDelegate = PickContactDelegate(picker: self, resolve: resolve, reject: reject)
+    contactDelegate = PickContactDelegate(delegate: self, resolve: resolve, reject: reject)
     vc.delegate = contactDelegate
     
     if let displayedPropertyKeys = data["displayedPropertyKeys"] as? [String] {
       vc.displayedPropertyKeys = displayedPropertyKeys
     }
     
-    DispatchQueue.main.async {
-      UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
-    }
+    present(viewController: vc)
   }
   
   @objc func pickContacts(_ data: [String: Any], resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
     let vc = CNContactPickerViewController()
-    contactsDelegate = PickContactsDelegate(picker: self, resolve: resolve, reject: reject)
+    contactsDelegate = PickContactsDelegate(delegate: self, resolve: resolve, reject: reject)
     vc.delegate = contactsDelegate
     
     if let displayedPropertyKeys = data["displayedPropertyKeys"] as? [String] {
       vc.displayedPropertyKeys = displayedPropertyKeys
     }
     
-    DispatchQueue.main.async {
-      UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
-    }
+    present(viewController: vc)
   }
   
+  func done() {
+    contactDelegate = nil
+    contactsDelegate = nil
+  }
   
   static func addString(data: inout [String: Any], key: String, value: String?) {
     if let x = value, !x.isEmpty {
@@ -272,3 +301,4 @@ class RNContactPicker: NSObject {
   }
 
 }
+
